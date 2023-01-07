@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3307/hotel_booking
+    username: root
+    password: 11235813Ryan#
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: demotest1a23456789@gmail.com
+    password: Demotest
+    #password app mail xfoganmrtdjxesny
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            hotelbooking:
+              client-id: 549499742605-o8kg65avchql7etvlb9082j9vgt074o7.apps.googleusercontent.com
+              client-secret: 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
+  #        facebook:
+  #          hotelbooking:
+  #            client-id: 549499742605-o8kg65avchql7etvlb9082j9vgt074o7.apps.googleusercontent.com
+  #            client-secret: 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
+server:
+  servlet:
+    context-path: /api
+  port: 8080
