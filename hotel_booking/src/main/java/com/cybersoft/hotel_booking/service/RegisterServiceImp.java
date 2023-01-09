@@ -1,13 +1,13 @@
 package com.cybersoft.hotel_booking.service;
 
+import com.cybersoft.hotel_booking.entity.RolesEntity;
 import com.cybersoft.hotel_booking.entity.UsersEntity;
-import com.cybersoft.hotel_booking.payload.request.RegisterRequest;
+import com.cybersoft.hotel_booking.payload.request.LogInRequest;
 import com.cybersoft.hotel_booking.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,7 +15,6 @@ import org.springframework.util.StringUtils;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -28,56 +27,58 @@ public class RegisterServiceImp implements RegisterService {
     private UsersRepository usersRepository;
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-
+    @Autowired
+    private RolesService rolesService;
     @Override
-    public UsersEntity checkLogin(String email) {
-        List<UsersEntity> users = usersRepository.findByEmail(email);
-
-        return users.size() > 0 ? users.get(0) : null;
-    }
-    @Override
-    public UsersEntity registerNewUserAccount(RegisterRequest registerRequest, String siteURL) throws UnsupportedEncodingException, MessagingException {
-            UsersEntity UsersEntity =new UsersEntity();
-            UsersEntity.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-            UsersEntity.setEmail(registerRequest.getEmail());
-//            String randomCode = RandomString.make(12);
-//            UsersEntity.setVerifyCode(randomCode);
-//            UsersEntity.setVerifyCodeExpired(new Timestamp(System.currentTimeMillis()+expiredDate));
-            System.out.println("new Timestamp(System.currentTimeMillis()+expiredDate) = "
-                    + new Timestamp(System.currentTimeMillis()+expiredDate));
+    public UsersEntity registerNewUserAccount(LogInRequest logInRequest, String siteURL) throws UnsupportedEncodingException, MessagingException {
+        if (emailExists(logInRequest.getEmail())) {
+            System.out.println("There is an account with that email address: "
+                    + logInRequest.getEmail());
+            return null;
+        }
+        else {
+            UsersEntity UsersEntity = new UsersEntity();
+            UsersEntity.setEmail(logInRequest.getEmail());
+            RolesEntity rolesEntity = new RolesEntity();
+            System.out.println("rolesService.getRole(logInRequest.getRole() = " + rolesService.getRole(logInRequest.getRole()));
+            System.out.println("logInRequest.getRole() = " + logInRequest.getRole());
+            if (!StringUtils.hasText(logInRequest.getRole()) || rolesService.getRole(logInRequest.getRole())==null)
+            {
+                rolesEntity =rolesService.getRole("regular");
+                System.out.println("rolesEntity1 = " + rolesEntity);
+            }
+            else {
+                rolesEntity =rolesService.getRole(logInRequest.getRole());
+                System.out.println("rolesEntity = " + rolesEntity);
+            }
+            rolesEntity.setRoleName(rolesEntity.getRoleName());
+            UsersEntity.setRoles(rolesEntity);
+            UsersEntity.setPassword(passwordEncoder.encode(logInRequest.getPassword()));
             System.out.println("Đăng kí thành công");
-            sendVerificationEmail(registerRequest.getEmail(), siteURL);
+            sendVerificationEmail(logInRequest.getEmail(), siteURL);
             return usersRepository.save(UsersEntity);
-
+        }
     }
-//
     @Override
     public UsersEntity confirmByEmail(String email) {
-        List<UsersEntity> usersEntities= usersRepository.findByEmail(email+"@gmail.com");
+        List<UsersEntity> usersEntities= usersRepository.findByEmail(email);
         if (usersEntities.size()>0){
-//            if (UsersEntity.getVerifyCodeExpired().after(new Timestamp(System.currentTimeMillis()))){
-//                UsersEntity.set(true);
-//                usersRepository.save(UsersEntity);
-//                return "Active thành công";
-//            }
             usersEntities.get(0).setEmailVerify(true);
             usersRepository.save(usersEntities.get(0));
             return usersRepository.save(usersEntities.get(0));
-//            return "Active thất bại";
         }
         else
             return null;
-
     }
 
 
     @Override
-    public List<UsersEntity> emailExists(String email) {
+    public boolean emailExists(String email) {
         List<UsersEntity> usersEntities= usersRepository.findByEmail(email);
-        return  (usersEntities.size()>0)?usersEntities:null;
+        return  (usersEntities.size()>0)?true:false;
     }
     @Override
     public void signInPassword(String email,String password) {
@@ -102,11 +103,9 @@ public class RegisterServiceImp implements RegisterService {
                 "Nhấn nút \"Xác nhận\" để chứng thực địa chỉ email và mở khóa cho toàn bộ tài khoản.<br>" +
                 "Chúng tôi cũng sẽ nhập các đặt phòng bạn đã thực hiện với địa chỉ email này.<br>"
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">Xác nhận</a></h3>";
-
         content = content.replace("[[email]]", email);
-        String nameOnly = email.substring(0,email.indexOf('@'));
-        String verifyURL = siteURL + "/register/verifyemail/"+nameOnly;
-        content = content.replace("[[URL]]", verifyURL);
+        System.out.println("verifyURL = " + siteURL);
+        content = content.replace("[[URL]]", siteURL);
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         helper.setFrom(fromAddress, senderName);

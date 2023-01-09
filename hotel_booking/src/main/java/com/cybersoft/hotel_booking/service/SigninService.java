@@ -1,13 +1,11 @@
 package com.cybersoft.hotel_booking.service;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
+import com.cybersoft.hotel_booking.entity.UsersEntity;
+
+import java.util.List;
+
 
 public interface SigninService {
-
-    //    List<RoleEntity> getRoles(String email);
-    void sendForgetPass(String email, String siteURL) throws UnsupportedEncodingException, MessagingException;
-
-    boolean newPassord(String email, String password,String passwordConfirm);
+    List<UsersEntity> newPassord(String email, String oldPassword, String newPassword);
 
 }

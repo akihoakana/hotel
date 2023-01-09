@@ -11,15 +11,34 @@ public class RolesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "roleName")
+    @Column(name = "role_name")
     private String roleName;
 
     @JsonIgnore
     @OneToMany(mappedBy = "roles")
     Set<UsersEntity> usersEntitySet;
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public String getRoleName() {
+        return roleName;
+    }
 
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
+    public Set<UsersEntity> getUsersEntitySet() {
+        return usersEntitySet;
+    }
+
+    public void setUsersEntitySet(Set<UsersEntity> usersEntitySet) {
+        this.usersEntitySet = usersEntitySet;
+    }
 }

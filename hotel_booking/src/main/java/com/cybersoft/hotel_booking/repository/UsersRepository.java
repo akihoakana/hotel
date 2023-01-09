@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface UsersRepository extends JpaRepository<UsersEntity,Integer> {
-    List<UsersEntity> findByEmailAndPassword(String email, String password);
     List<UsersEntity> findByEmail(String email);
-    UsersEntity findByTokenGoogle(String tokenGoogle);
 }

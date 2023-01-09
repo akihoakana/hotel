@@ -1,7 +1,5 @@
 package com.cybersoft.hotel_booking.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -15,10 +13,10 @@ public class ReviewEntity {
     @Column(name = "content")
     private String content ;
 
-    @Column(name = "rateScore")
+    @Column(name = "rate_score")
     private int rateScore  ;
 
-    @Column(name = "createdDate")
+    @Column(name = "created_date")
     @Temporal(TemporalType.DATE)
     private Date createdDate;
 
@@ -28,19 +26,61 @@ public class ReviewEntity {
 //    @Column(name = "usersId")
 //    private int usersId ;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "hotelId")
+    @JoinColumn(name = "hotel_id")
     private HotelEntity hotel;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private UsersEntity users;
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public String getContent() {
+        return content;
+    }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
 
+    public int getRateScore() {
+        return rateScore;
+    }
 
+    public void setRateScore(int rateScore) {
+        this.rateScore = rateScore;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public HotelEntity getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(HotelEntity hotel) {
+        this.hotel = hotel;
+    }
+
+    public UsersEntity getUsers() {
+        return users;
+    }
+
+    public void setUsers(UsersEntity users) {
+        this.users = users;
+    }
 }
