@@ -2,7 +2,7 @@ package com.cybersoft.hotel_booking.service;
 
 import com.cybersoft.hotel_booking.entity.RolesEntity;
 import com.cybersoft.hotel_booking.entity.UsersEntity;
-import com.cybersoft.hotel_booking.payload.request.LogInRequest;
+import com.cybersoft.hotel_booking.payload.request.SignInRequest;
 import com.cybersoft.hotel_booking.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +33,7 @@ public class RegisterServiceImp implements RegisterService {
     @Autowired
     private RolesService rolesService;
     @Override
-    public UsersEntity registerNewUserAccount(LogInRequest logInRequest, String siteURL) throws UnsupportedEncodingException, MessagingException {
+    public UsersEntity registerNewUserAccount(SignInRequest logInRequest, String siteURL) throws UnsupportedEncodingException, MessagingException {
         if (emailExists(logInRequest.getEmail())) {
             System.out.println("There is an account with that email address: "
                     + logInRequest.getEmail());

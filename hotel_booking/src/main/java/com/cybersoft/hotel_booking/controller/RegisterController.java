@@ -1,17 +1,14 @@
 package com.cybersoft.hotel_booking.controller;
 
 import com.cybersoft.hotel_booking.entity.UsersEntity;
-import com.cybersoft.hotel_booking.payload.request.LogInRequest;
+import com.cybersoft.hotel_booking.payload.request.SignInRequest;
 import com.cybersoft.hotel_booking.model.RegisterResponseModel;
 import com.cybersoft.hotel_booking.payload.response.DataResponse;
 import com.cybersoft.hotel_booking.service.RegisterService;
-import com.cybersoft.hotel_booking.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -23,19 +20,13 @@ import java.io.UnsupportedEncodingException;
 @RestController
 @RequestMapping("/register")
 
-public class RegisterPage {
+public class RegisterController {
     @Autowired
     private RegisterService registerService;
     @Autowired
     ApplicationEventPublisher eventPublisher;
-
-    @PostMapping("/regular")
-    @PreAuthorize("hasAnyAuthority('regular')")
-    public String test(){
-        return "Hello regular LoginController";
-    }
     @PostMapping("")
-    public ResponseEntity<?> register(@Valid @RequestBody LogInRequest logInRequest, HttpServletRequest request) throws IOException, MessagingException {
+    public ResponseEntity<?> register(@Valid @RequestBody SignInRequest logInRequest, HttpServletRequest request) throws IOException, MessagingException {
         String verifyURL = request.getRequestURL().toString()
                 .replace(request.getServletPath(), "") + "/register/verify/"+logInRequest.getEmail();
         UsersEntity usersEntity = registerService.registerNewUserAccount(logInRequest,verifyURL);

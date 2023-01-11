@@ -37,7 +37,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 if (!usersService.checkToken(token)){
                     String json = jwtTokenHelper.decodeToken(token);
                     Map map = gson.fromJson(json, Map.class);
-                    List<GrantedAuthority> roles =Arrays.stream(map.get("roles").toString()
+                    List<GrantedAuthority> roles =
+                            Arrays.stream(map.get("roles").toString()
                             .replace("[","")
                             .replace("]","")
                             .replace("{role=","")
@@ -46,9 +47,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
                     if(StringUtils.hasText(map.get("type").toString())
-                            && !map.get("type").toString().equals("refesh")){
-                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken
-                                (map.get("username"),"",roles);
+                            && !map.get("type").toString().equals("refesh")) {
+                        UsernamePasswordAuthenticationToken authenticationToken =
+                                new UsernamePasswordAuthenticationToken(map.get("username"), "", roles);
+                        System.out.println("authenticationToken = " + authenticationToken.toString());
                         System.out.println("authenticationToken.getAuthorities() = " + authenticationToken.getAuthorities());
                         SecurityContext securityContext = SecurityContextHolder.getContext();
                         securityContext.setAuthentication(authenticationToken);

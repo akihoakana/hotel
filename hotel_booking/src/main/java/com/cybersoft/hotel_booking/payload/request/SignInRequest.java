@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
-public class LogInRequest {
+public class SignInRequest {
   @NotBlank(message = "Vui lòng nhập email")
   @Email
   private String email;

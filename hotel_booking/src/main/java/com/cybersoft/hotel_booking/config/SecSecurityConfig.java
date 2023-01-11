@@ -37,8 +37,7 @@ public class SecSecurityConfig {
     }
     @Bean
     public PasswordEncoder passwordEncoder(){
-        PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-        return passwordEncoder;
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -50,12 +49,10 @@ public class SecSecurityConfig {
                     .antMatchers("/register").permitAll()
                     .antMatchers("/signin").permitAll()
                 .anyRequest().authenticated()
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/signin")
-//                .logoutUrl("/signin/logout")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID")
+        /**
+         * bật dòng dưới và ẩn filter để không cần đăng nhập
+         */
+//                .anyRequest().permitAll()
         ;
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -16,25 +16,12 @@ spring:
     port: 587
     username: demotest1a23456789@gmail.com
     password: xfoganmrtdjxesny
-    #password app mail xfoganmrtdjxesny
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            hotelbooking:
-              client-id: 549499742605-o8kg65avchql7etvlb9082j9vgt074o7.apps.googleusercontent.com
-              client-secret: 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
-  #        facebook:
-  #          hotelbooking:
-  #            client-id: 549499742605-o8kg65avchql7etvlb9082j9vgt074o7.apps.googleusercontent.com
-  #            client-secret: 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
 server:
   servlet:
     context-path: /api

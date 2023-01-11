@@ -1,8 +1,7 @@
 package com.cybersoft.hotel_booking.controller;
 
-import com.cybersoft.hotel_booking.entity.TokenExpiredEntity;
 import com.cybersoft.hotel_booking.jwt.JwtTokenHelper;
-import com.cybersoft.hotel_booking.payload.request.LogInRequest;
+import com.cybersoft.hotel_booking.payload.request.SignInRequest;
 import com.cybersoft.hotel_booking.payload.request.NewPasswordRequest;
 import com.cybersoft.hotel_booking.payload.response.DataResponse;
 import com.cybersoft.hotel_booking.payload.response.DataTokenResponse;
@@ -18,14 +17,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -46,21 +46,22 @@ public class SignInController {
 
     @PreAuthorize("hasAnyAuthority('admin')")
     @PostMapping("/admin")
-    public String test(){
-        return "Hello admin LoginController";
+    public String admin(){
+        return SecurityContextHolder.getContext().toString();
     }
 
-    @PreAuthorize("hasAnyAuthority('user')")
-    @PostMapping("/user")
-    public String user(){
-        return "Hello LoginController";
+
+    @PostMapping("/regular")
+    @PreAuthorize("hasAnyAuthority('regular')")
+    public String regular(){
+        return SecurityContextHolder.getContext().toString();
     }
 
     private long expiredDate = 8 * 60* 60 * 60 * 1000;
     private long refreshExpiredDate = 80 * 60 * 60 * 1000;
 
     @PostMapping("")
-    public ResponseEntity<?> singin(@Valid @RequestBody LogInRequest request){
+    public ResponseEntity<?> singin(@Valid @RequestBody SignInRequest request){
 
         UsernamePasswordAuthenticationToken authRequest =
                 new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword());
@@ -83,10 +84,15 @@ public class SignInController {
         return new ResponseEntity<>(dataResponse, HttpStatus.OK);
     }
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         if(StringUtils.hasText(request.getHeader("Authorization")) && request.getHeader("Authorization").startsWith("Bearer ")){
             String token =request.getHeader("Authorization").substring(7);
+
             System.out.println("token = " + token);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null){
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+            }
             return ResponseEntity.ok(usersService.invalidToken(token));
         }
         else
