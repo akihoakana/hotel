@@ -1,5 +1,7 @@
 package com.cybersoft.hotel_booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity(name = "attraction")
@@ -21,7 +23,7 @@ public class AttractionEntity {
 //    @Column(name = "hotelId")
 //    private int hotelId  ;
 
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private HotelEntity hotel;

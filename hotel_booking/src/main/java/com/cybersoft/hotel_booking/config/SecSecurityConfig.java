@@ -46,15 +46,15 @@ public class SecSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                    .antMatchers("/register").permitAll()
-                    .antMatchers("/signin").permitAll()
-                .anyRequest().authenticated()
+//                    .antMatchers("/register").permitAll()
+//                    .antMatchers("/signin").permitAll()
+//                .anyRequest().authenticated()
         /**
          * bật dòng dưới và ẩn filter để không cần đăng nhập
          */
-//                .anyRequest().permitAll()
+                .anyRequest().permitAll()
         ;
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

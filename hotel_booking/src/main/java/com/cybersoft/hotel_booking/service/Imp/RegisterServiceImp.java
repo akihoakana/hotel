@@ -1,9 +1,11 @@
-package com.cybersoft.hotel_booking.service;
+package com.cybersoft.hotel_booking.service.Imp;
 
 import com.cybersoft.hotel_booking.entity.RolesEntity;
 import com.cybersoft.hotel_booking.entity.UsersEntity;
 import com.cybersoft.hotel_booking.payload.request.SignInRequest;
 import com.cybersoft.hotel_booking.repository.UsersRepository;
+import com.cybersoft.hotel_booking.service.RegisterService;
+import com.cybersoft.hotel_booking.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -43,16 +45,12 @@ public class RegisterServiceImp implements RegisterService {
             UsersEntity UsersEntity = new UsersEntity();
             UsersEntity.setEmail(logInRequest.getEmail());
             RolesEntity rolesEntity = new RolesEntity();
-            System.out.println("rolesService.getRole(logInRequest.getRole() = " + rolesService.getRole(logInRequest.getRole()));
-            System.out.println("logInRequest.getRole() = " + logInRequest.getRole());
             if (!StringUtils.hasText(logInRequest.getRole()) || rolesService.getRole(logInRequest.getRole())==null)
             {
                 rolesEntity =rolesService.getRole("regular");
-                System.out.println("rolesEntity1 = " + rolesEntity);
             }
             else {
                 rolesEntity =rolesService.getRole(logInRequest.getRole());
-                System.out.println("rolesEntity = " + rolesEntity);
             }
             rolesEntity.setRoleName(rolesEntity.getRoleName());
             UsersEntity.setRoles(rolesEntity);

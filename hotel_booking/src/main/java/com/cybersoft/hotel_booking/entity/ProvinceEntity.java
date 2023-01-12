@@ -1,5 +1,7 @@
 package com.cybersoft.hotel_booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ public class ProvinceEntity {
     @Column(name = "province")
     private String province;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "province")
     Set<CityEntity> cityEntitySet;
 

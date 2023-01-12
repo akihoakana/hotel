@@ -1,5 +1,7 @@
 package com.cybersoft.hotel_booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -34,24 +36,24 @@ public class HotelEntity {
 //    @Column(name = "cityId")
 //    private int cityId;
 
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "city_id")
     private CityEntity city;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel")
     Set<HotelServiceEntity> hotelServiceEntitySet;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel")
     Set<AttractionEntity> attractionEntitySet;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel")
     Set<ReviewEntity> reviewEntitySet;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "hotel")
     Set<RoomEntity> room;
 

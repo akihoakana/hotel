@@ -1,17 +1,17 @@
-package com.cybersoft.hotel_booking.service;
+package com.cybersoft.hotel_booking.service.Imp;
 
 import com.cybersoft.hotel_booking.entity.TokenExpiredEntity;
 import com.cybersoft.hotel_booking.entity.UsersEntity;
 import com.cybersoft.hotel_booking.repository.TokenRepository;
 import com.cybersoft.hotel_booking.repository.UsersRepository;
+import com.cybersoft.hotel_booking.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
 @Service
-public class UsersServiceImp implements UsersService{
+public class UsersServiceImp implements UsersService {
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
@@ -32,8 +32,6 @@ public class UsersServiceImp implements UsersService{
 
     @Override
     public boolean checkToken(String token) {
-        String abc =null;
-        System.out.println("tokenRepository.findByName(token) = " + tokenRepository.findByName(token));
     return tokenRepository.findByName(token)!=null ;
     }
 

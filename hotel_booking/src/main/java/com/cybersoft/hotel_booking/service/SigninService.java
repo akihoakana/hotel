@@ -6,6 +6,6 @@ import java.util.List;
 
 
 public interface SigninService {
-    List<UsersEntity> newPassord(String email, String oldPassword, String newPassword);
+    public List<UsersEntity> newPassword(String email, String password, String passwordConfirm);
 
 }

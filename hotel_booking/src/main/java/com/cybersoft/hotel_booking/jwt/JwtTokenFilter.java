@@ -50,8 +50,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                             && !map.get("type").toString().equals("refesh")) {
                         UsernamePasswordAuthenticationToken authenticationToken =
                                 new UsernamePasswordAuthenticationToken(map.get("username"), "", roles);
-                        System.out.println("authenticationToken = " + authenticationToken.toString());
-                        System.out.println("authenticationToken.getAuthorities() = " + authenticationToken.getAuthorities());
                         SecurityContext securityContext = SecurityContextHolder.getContext();
                         securityContext.setAuthentication(authenticationToken);
                     }
