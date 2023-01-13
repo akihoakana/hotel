@@ -45,7 +45,8 @@ public class CityController {
         if (typeCity.equals("city")){
             return ResponseEntity.ok(cityRepository.findAll());
         }
-        else
+        else if (typeCity.equals("province"))
             return ResponseEntity.ok(provinceRepository.findAll());
+        return ResponseEntity.ok("ok");
     }
 }

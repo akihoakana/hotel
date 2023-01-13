@@ -28,13 +28,13 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
     private ProvinceRepository provinceRepository;
 
 
-    private List<Object> findAllByList(String typeCity, List<?> provinceEntityList) {
-        List<Object> list = new ArrayList<>();
+    private List<?> findAllByList(String typeCity, List<?> provinceEntityList) {
         if (typeCity.equals("city")){
+            List<CitySearchDTO> list = new ArrayList<>();
             for (CityEntity cityEntity : (List<CityEntity>) provinceEntityList) {
                 CitySearchDTO citySearchDTO = new CitySearchDTO();
-                Set<AttractionModel> attractionModels = new HashSet<>();
-                Set<HotelModel> hotelModels = new HashSet<>();
+                List<AttractionModel> attractionModels = new ArrayList<>();
+                List<HotelModel> hotelModels = new ArrayList<>();
 
                 citySearchDTO.setId(cityEntity.getId());
                 citySearchDTO.setNameCity(cityEntity.getCity());
@@ -44,7 +44,6 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                 citySearchDTO.setDateOfStay(2);
                 citySearchDTO.setAdultNumber(2);
                 citySearchDTO.setChildNumber(2);
-                citySearchDTO.setPrice(Math.random());
 
                 for (HotelEntity hotelEntity : cityEntity.getHotelEntitySet()) {
                     HotelModel hotelModel = new HotelModel();
@@ -54,11 +53,11 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                     hotelModel.setDescriptionHotel(hotelEntity.getDescription());
                     hotelModel.setImageHotel(hotelEntity.getImage());
 
-                    hotelModel.setRateHotel(2);
-                    hotelModel.setCountRateHotel(2);
+                    hotelModel.setRateHotel(Math.random()*100);
+                    hotelModel.setCountRateHotel(100);
                     hotelModel.setDescriptionRateHotel("setDescriptionRateHotel");
 
-                    hotelModel.setPriceMin(2);
+                    hotelModel.setPriceMin(Math.random()*100);
                     hotelModels.add(hotelModel);
 
                     for (AttractionEntity attractionEntity : hotelEntity.getAttractionEntitySet()) {
@@ -73,13 +72,17 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                 citySearchDTO.setAttractionModels(attractionModels);
                 list.add(citySearchDTO);
             }
+            return list;
+
         }
         else {
+            List<ProvinceSearchDTO> list = new ArrayList<>();
+
             for (ProvinceEntity provinceEntity : (List<ProvinceEntity>) provinceEntityList) {
                 int countAccommodationHotel = 0;
                 ProvinceSearchDTO provinceSearchDTO = new ProvinceSearchDTO();
-                Set<CityModel> cityModels = new HashSet<>();
-                Set<HotelModel> hotelModels = new HashSet<>();
+                List<CityModel> cityModels = new ArrayList<>();
+                List<HotelModel> hotelModels = new ArrayList<>();
 
                 provinceSearchDTO.setId(provinceEntity.getId());
                 provinceSearchDTO.setNameProvince(provinceEntity.getProvince());
@@ -87,7 +90,6 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                 provinceSearchDTO.setDateOfStay(2);
                 provinceSearchDTO.setAdultNumber(2);
                 provinceSearchDTO.setChildNumber(2);
-                provinceSearchDTO.setPrice(Math.random());
 
                 for (CityEntity cityEntity : provinceEntity.getCityEntitySet()) {
                     CityModel cityModel=new CityModel();
@@ -104,11 +106,11 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                     hotelModel.setDescriptionHotel(hotelEntity.getDescription());
                     hotelModel.setImageHotel(hotelEntity.getImage());
 
-                    hotelModel.setRateHotel(2);
-                    hotelModel.setCountRateHotel(2);
+                    hotelModel.setRateHotel(Math.random()*100);
+                    hotelModel.setCountRateHotel(100);
                     hotelModel.setDescriptionRateHotel("setDescriptionRateHotel");
 
-                    hotelModel.setPriceMin(2);
+                    hotelModel.setPriceMin(Math.random()*100);
                     hotelModels.add(hotelModel);
                     }
                 }
@@ -118,11 +120,11 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                 provinceSearchDTO.setCityModels(cityModels);
                 list.add(provinceSearchDTO);
             }
+            return list;
         }
-        return list;
     }
 
-    public List<Object> findAllByType (String typeCity) {
+    public List<?> findAllByType (String typeCity) {
         if (typeCity.equals("city")){
             List<CityEntity> cityEntityList = cityRepository.findAll();
             return findAllByList(typeCity,cityEntityList);

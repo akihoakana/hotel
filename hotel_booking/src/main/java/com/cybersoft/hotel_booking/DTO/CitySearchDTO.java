@@ -5,6 +5,7 @@ import com.cybersoft.hotel_booking.model.CityProvinceModel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -17,5 +18,5 @@ public class CitySearchDTO extends CityProvinceModel {
     /**
      *  Attraction
      */
-    private Set<AttractionModel> attractionModels;
+    private List<AttractionModel> attractionModels;
 }

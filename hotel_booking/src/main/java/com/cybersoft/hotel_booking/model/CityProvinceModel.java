@@ -1,5 +1,6 @@
 package com.cybersoft.hotel_booking.model;
 
+import java.util.List;
 import java.util.Set;
 
 import lombok.Getter;
@@ -13,7 +14,7 @@ public class CityProvinceModel {
     /**
      *  hotel
      */
-    private Set<HotelModel> hotelModels;
+    private List<HotelModel> hotelModels;
     /**
      *  Search
      */
@@ -21,6 +22,4 @@ public class CityProvinceModel {
     private int adultNumber;
     private int childNumber;
     private int countAccommodation;
-    private double price;
-
 }
