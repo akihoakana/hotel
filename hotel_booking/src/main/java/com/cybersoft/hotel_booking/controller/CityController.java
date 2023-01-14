@@ -24,6 +24,10 @@ public class CityController {
     public ResponseEntity<?> search(@PathVariable("typecity") String typeCity) {
         return ResponseEntity.ok(cityProvinceServiceImp.findAllByType(typeCity));
     }
+    @PostMapping("/{name}/search")
+    public ResponseEntity<?> searchName(@PathVariable("typecity") String typeCity, @PathVariable("name") String name) {
+        return ResponseEntity.ok(cityProvinceServiceImp.findAllByTypeAndName(typeCity,name));
+    }
     @PostMapping("/{name}")
     public ResponseEntity<?> findAllAccommodationByTypeAndName(@PathVariable("typecity") String typeCity, @PathVariable("name") String name) {
         return ResponseEntity.ok(cityProvinceServiceImp.findAllAccommodationByTypeAndName(typeCity,name));
@@ -32,6 +36,17 @@ public class CityController {
     public ResponseEntity<?> findAllAccommodationByType(@PathVariable("typecity") String typeCity) {
         return ResponseEntity.ok(cityProvinceServiceImp.findAllAccommodationByType(typeCity)) ;
     }
+    @PostMapping("/findall")
+    public ResponseEntity<?> findall(@PathVariable("typecity") String typeCity) {
+        if (typeCity.equals("city")){
+            return ResponseEntity.ok(cityRepository.findAll());
+        }
+        else if (typeCity.equals("province"))
+            return ResponseEntity.ok(provinceRepository.findAll());
+        else
+            return ResponseEntity.ok("ok");
+    }
+
 //    @PostMapping("/{name}")
 //    public ResponseEntity<?> findAllAccommodationByTypeAndName(@PathVariable("typecity") String typeCity, @PathVariable("name") String name) {
 //        return ResponseEntity.ok(cityProvinceServiceImp.findAllAccommodationByTypeAndName(typeCity,name));
@@ -40,13 +55,4 @@ public class CityController {
 //    public ResponseEntity<?> findAllAccommodationByType(@PathVariable("typecity") String typeCity) {
 //        return ResponseEntity.ok(cityProvinceServiceImp.findAllAccommodationByType(typeCity)) ;
 //    }
-    @PostMapping("/findall")
-    public ResponseEntity<?> findall(@PathVariable("typecity") String typeCity) {
-        if (typeCity.equals("city")){
-            return ResponseEntity.ok(cityRepository.findAll());
-        }
-        else if (typeCity.equals("province"))
-            return ResponseEntity.ok(provinceRepository.findAll());
-        return ResponseEntity.ok("ok");
-    }
 }

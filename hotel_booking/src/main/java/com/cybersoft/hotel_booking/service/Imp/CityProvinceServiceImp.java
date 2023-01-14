@@ -16,6 +16,7 @@ import com.cybersoft.hotel_booking.service.CityService;
 import com.cybersoft.hotel_booking.service.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 
@@ -134,106 +135,152 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
             return findAllByList(typeCity,provinceEntityList);
         }
     }
-
-    public List<?> findAllAccommodationByType (String typeCity) {
-        if (typeCity.equals("city")) {
-            List<?> list= findAllByList(typeCity,cityRepository.findAll());
-            return countAllByList(typeCity,list);
+    public List<?> findAllByTypeAndName (String typeCity,String name) {
+        if (typeCity.equals("city")){
+            List<CityEntity> cityEntityList = cityRepository.findByCity(name);
+            return findAllByList(typeCity,cityEntityList);
         }
         else {
-            List<?> list= findAllByList(typeCity,provinceRepository.findAll());
-            return countAllByList(typeCity,list);
+            List<ProvinceEntity> provinceEntityList = provinceRepository.findByProvince(name);
+            return findAllByList(typeCity,provinceEntityList);
         }
+    }
+    public List<?> searchName (String typeCity,String name,String sort) {
+        if (typeCity.equals("city")) {
+            List<CitySearchDTO> list =(List<CitySearchDTO>) findAllByTypeAndName(typeCity,name);
+            return sortCity(list,sort);
+        }
+        else if (typeCity.equals("province")){
+            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) findAllByTypeAndName(typeCity,name);
+            return sortProvince(list,sort);
+        }
+        else
+            return new ArrayList<>();
+    }
+    public List<?> search (String typeCity,String sort) {
+        if (typeCity.equals("city")) {
+            List<CitySearchDTO> list =(List<CitySearchDTO>) findAllByType(typeCity);
+            return sortCity(list,sort);
+        }
+        else if (typeCity.equals("province")){
+            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) findAllByType(typeCity);
+            return sortProvince(list,sort);
+        }
+        else
+            return new ArrayList<>();
+    }
+
+    public List<?> findAllAccommodationByType (String typeCity) {
+            List<?> list= findAllByType(typeCity);
+            return countAllByList(typeCity,list);
     }
 
     public List<?> findAllAccommodationByTypeAndName (String typeCity,String name){
-        if (typeCity.equals("city")) {
-            List<?> list= findAllByList(typeCity,cityRepository.findByCity(name));
+        List<?> list= findAllByTypeAndName(typeCity,name);
             return countAllByList(typeCity,list);
-        }
-        else {
-            List<?> list= findAllByList(typeCity,provinceRepository.findByProvince(name));
-            return countAllByList(typeCity,list);
-        }
     }
 
-    private List<?> countAllByList (String typeCity,List<?> list) {
+    private List<CityProvinceDTO> countAllByList (String typeCity,List<?> list) {
         List<CityProvinceDTO> cityProvinceDTOS= new ArrayList<>();
-
         if (typeCity.equals("city")){
-            for (CityEntity cityEntity : (List<CityEntity>) list) {
+            for (CitySearchDTO citySearchDTO : (List<CitySearchDTO>) list) {
                 CityProvinceDTO cityProvinceDTO = new CityProvinceDTO();
-                cityProvinceDTO.setId(cityEntity.getId());
-                cityProvinceDTO.setName(cityEntity.getCity());
-                cityProvinceDTO.setCountAccommodation(cityEntity.getHotelEntitySet().size());
+                cityProvinceDTO.setId(citySearchDTO.getId());
+                cityProvinceDTO.setName(citySearchDTO.getNameCity());
+                cityProvinceDTO.setCountAccommodation(citySearchDTO.getHotelModels().size());
                 cityProvinceDTOS.add(cityProvinceDTO);
             }
         }
         else {
-            for (ProvinceEntity provinceEntity : (List<ProvinceEntity>) list) {
+            for (ProvinceSearchDTO provinceSearchDTO : (List<ProvinceSearchDTO>) list) {
                 CityProvinceDTO cityProvinceDTO = new CityProvinceDTO();
-                cityProvinceDTO.setId(provinceEntity.getId());
-                cityProvinceDTO.setName(provinceEntity.getProvince());
-                int countAccommodationHotel = 0;
-
-                for (CityEntity cityEntity : provinceEntity.getCityEntitySet()) {
-                    countAccommodationHotel += cityEntity.getHotelEntitySet().size();
-                }
-                cityProvinceDTO.setCountAccommodation(countAccommodationHotel);
+                cityProvinceDTO.setId(provinceSearchDTO.getId());
+                cityProvinceDTO.setName(provinceSearchDTO.getNameProvince());
+                cityProvinceDTO.setCountAccommodation(provinceSearchDTO.getHotelModels().size());
                 cityProvinceDTOS.add(cityProvinceDTO);
             }
         }
         return cityProvinceDTOS;
     }
 
-//    public List<CityProvinceDTO> findAllAccommodationByType (String typeCity) {
-//        if (typeCity.equals("city")){
-//            List<CityEntity> cityEntityList = cityRepository.findAll();
-//            return countAllByList(typeCity,cityEntityList);
+    private List<ProvinceSearchDTO> sortProvince(List<ProvinceSearchDTO>list,String sort){
+        if (sort.contains("price")){
+            for (ProvinceSearchDTO provinceSearchDTO :  list){
+                List<HotelModel> hotelModels =provinceSearchDTO.getHotelModels();
+                if (sort.equals("pricemax"))
+                    hotelModels.sort(Comparator.comparing(HotelModel::getPriceMin).reversed());
+                else
+                    hotelModels.sort(Comparator.comparing(HotelModel::getPriceMin));
+                provinceSearchDTO.setHotelModels(hotelModels);
+            }
+        }
+        else if (sort.contains("rank")){
+            for (ProvinceSearchDTO provinceSearchDTO :  list){
+                List<HotelModel> hotelModels =provinceSearchDTO.getHotelModels();
+                if (sort.equals("rankmax"))
+                    hotelModels.sort(Comparator.comparing(HotelModel::getHotelRank).reversed());
+                else
+                    hotelModels.sort(Comparator.comparing(HotelModel::getHotelRank));
+                provinceSearchDTO.setHotelModels(hotelModels);
+            }
+        }
+        else if (sort.contains("rate")){
+            for (ProvinceSearchDTO provinceSearchDTO :  list){
+                List<HotelModel> hotelModels =provinceSearchDTO.getHotelModels();
+                if (sort.equals("ratemax"))
+                    hotelModels.sort(Comparator.comparing(HotelModel::getRateHotel).reversed());
+                else
+                    hotelModels.sort(Comparator.comparing(HotelModel::getRateHotel));
+                provinceSearchDTO.setHotelModels(hotelModels);
+            }
+        }
+        else if (!sort.contains("rate") &&!sort.contains("price")&&!sort.contains("rank")){
+            list =new ArrayList<>();
+        }
+        return list;
+    }
+    private List<CitySearchDTO> sortCity(List<CitySearchDTO>list,String sort){
+        if (sort.contains("price")){
+            for (CitySearchDTO citySearchDTO : list){
+                List<HotelModel> hotelModels =citySearchDTO.getHotelModels();
+                if (sort.equals("pricemax"))
+                    hotelModels.sort(Comparator.comparing(HotelModel::getPriceMin).reversed());
+                else
+                    hotelModels.sort(Comparator.comparing(HotelModel::getPriceMin));
+                citySearchDTO.setHotelModels(hotelModels);
+            }
+        }
+        else if (sort.contains("rank")){
+            for (CitySearchDTO citySearchDTO :  list){
+                List<HotelModel> hotelModels =citySearchDTO.getHotelModels();
+                if (sort.equals("rankmax"))
+                    hotelModels.sort(Comparator.comparing(HotelModel::getHotelRank).reversed());
+                else
+                    hotelModels.sort(Comparator.comparing(HotelModel::getHotelRank));
+                citySearchDTO.setHotelModels(hotelModels);
+            }
+        }
+        else if (sort.contains("rate")){
+            for (CitySearchDTO citySearchDTO :  list){
+                List<HotelModel> hotelModels =citySearchDTO.getHotelModels();
+                if (sort.equals("ratemax"))
+                    hotelModels.sort(Comparator.comparing(HotelModel::getRateHotel).reversed());
+                else
+                    hotelModels.sort(Comparator.comparing(HotelModel::getRateHotel));                citySearchDTO.setHotelModels(hotelModels);
+            }
+        }
+        else if (!sort.contains("rate") &&!sort.contains("price")&&!sort.contains("rank")){
+            list =new ArrayList<>();
+        }
+        return list;
+    }
+//    private <T extends CitySearchDTO> void abc(T t,List<?> list,List<CityProvinceDTO> cityProvinceDTOS){
+//        for (t: (List<T>) list) {
+//            CityProvinceDTO cityProvinceDTO = new CityProvinceDTO();
+//            cityProvinceDTO.setId(t.getId());
+//            cityProvinceDTO.setName(t.getNameCity());
+//            cityProvinceDTO.setCountAccommodation(t.getHotelModels().size());
+//            cityProvinceDTOS.add(cityProvinceDTO);
 //        }
-//        else {
-//            List<ProvinceEntity> provinceEntityList = provinceRepository.findAll();
-//            return countAllByList(typeCity,provinceEntityList);
-//        }
-//    }
-//    public List<CityProvinceDTO> findAllAccommodationByTypeAndName (String typeCity,String name){
-//        if (typeCity.equals("city")){
-//            List<CityEntity> cityEntityList = cityRepository.findByCity(name);
-//            return countAllByList(typeCity,cityEntityList);
-//        }
-//        else {
-//            List<ProvinceEntity> provinceEntityList = provinceRepository.findByProvince(name);
-//            return countAllByList(typeCity,provinceEntityList);
-//        }
-//    }
-
-
-//    private List<CityProvinceDTO> countAllByList(String typeCity,List<?> provinceEntityList) {
-//        List<CityProvinceDTO> list = new ArrayList<>();
-//        if (typeCity.equals("city")){
-//            List<CityEntity> cityEntityList = (List<CityEntity>) provinceEntityList;
-//            for (CityEntity cityEntity : cityEntityList) {
-//                CityProvinceDTO cityProvinceDTO = new CityProvinceDTO();
-//                cityProvinceDTO.setId(cityEntity.getId());
-//                cityProvinceDTO.setName(cityEntity.getCity());
-//                cityProvinceDTO.setCountAccommodation(cityEntity.getHotelEntitySet().size());
-//                list.add(cityProvinceDTO);
-//            }
-//        }
-//        else {
-//            for (ProvinceEntity provinceEntity : (List<ProvinceEntity>) provinceEntityList) {
-//                CityProvinceDTO cityProvinceDTO = new CityProvinceDTO();
-//                cityProvinceDTO.setId(provinceEntity.getId());
-//                cityProvinceDTO.setName(provinceEntity.getProvince());
-//                int countAccommodationHotel = 0;
-//
-//                for (CityEntity cityEntity : provinceEntity.getCityEntitySet()) {
-//                    countAccommodationHotel += cityEntity.getHotelEntitySet().size();
-//                }
-//                cityProvinceDTO.setCountAccommodation(countAccommodationHotel);
-//                list.add(cityProvinceDTO);
-//            }
-//        }
-//        return list;
 //    }
 }
