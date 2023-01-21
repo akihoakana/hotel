@@ -78,17 +78,6 @@ public class RegisterServiceImp implements RegisterService {
         List<UsersEntity> usersEntities= usersRepository.findByEmail(email);
         return  (usersEntities.size()>0)?true:false;
     }
-    @Override
-    public void signInPassword(String email,String password) {
-            //verify
-        List<UsersEntity> usersEntities= usersRepository.findByEmail(email);
-
-        boolean isMatch= passwordEncoder.matches(password,usersEntities.get(0).getPassword());
-            if (isMatch)
-                System.out.println("Đăng nhập thành công");
-            else
-                System.out.println("Sai pass");
-    }
 
     @Override
     public void sendVerificationEmail(String email, String siteURL) throws UnsupportedEncodingException, MessagingException {

@@ -43,7 +43,7 @@ public class FilterHotelController {
             else {
                 hotelModelPredicate = hotelModel -> hotelModel.getPriceMin()< abc1;
             }
-            List<CitySearchDTO> list =(List<CitySearchDTO>) cityProvinceServiceImp.findAllByType(typeCity);
+            List<CitySearchDTO> list =(List<CitySearchDTO>) cityProvinceServiceImp.findAllByType(typeCity,3);
             for (CitySearchDTO citySearchDTO : list){
                 List<HotelModel> hotelModels =citySearchDTO.getHotelModels().stream()
                         .filter(hotelModelPredicate)

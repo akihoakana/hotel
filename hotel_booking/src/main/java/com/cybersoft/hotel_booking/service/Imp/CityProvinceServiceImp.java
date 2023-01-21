@@ -2,6 +2,7 @@ package com.cybersoft.hotel_booking.service.Imp;
 
 import com.cybersoft.hotel_booking.DTO.CityProvinceDTO;
 import com.cybersoft.hotel_booking.DTO.CitySearchDTO;
+import com.cybersoft.hotel_booking.DTO.HotelSearchDTO;
 import com.cybersoft.hotel_booking.DTO.ProvinceSearchDTO;
 import com.cybersoft.hotel_booking.entity.AttractionEntity;
 import com.cybersoft.hotel_booking.entity.CityEntity;
@@ -10,6 +11,8 @@ import com.cybersoft.hotel_booking.entity.ProvinceEntity;
 import com.cybersoft.hotel_booking.model.AttractionModel;
 import com.cybersoft.hotel_booking.model.CityModel;
 import com.cybersoft.hotel_booking.model.HotelModel;
+import com.cybersoft.hotel_booking.repository.BookingRepository;
+import com.cybersoft.hotel_booking.repository.BookingRoomRepository;
 import com.cybersoft.hotel_booking.repository.CityRepository;
 import com.cybersoft.hotel_booking.repository.ProvinceRepository;
 import com.cybersoft.hotel_booking.service.CityService;
@@ -27,9 +30,11 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
     private CityRepository cityRepository;
     @Autowired
     private ProvinceRepository provinceRepository;
-
-
-    private List<?> findAllByList(String typeCity, List<?> provinceEntityList) {
+    @Autowired
+    private BookingRoomRepository bookingRoomRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
+    private List<?> findAllByList(String typeCity, List<?> provinceEntityList ,int bookingId) {
         if (typeCity.equals("city")){
             List<CitySearchDTO> list = new ArrayList<>();
             for (CityEntity cityEntity : (List<CityEntity>) provinceEntityList) {
@@ -58,8 +63,13 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                     hotelModel.setCountRateHotel(100);
                     hotelModel.setDescriptionRateHotel("setDescriptionRateHotel");
 
-                    hotelModel.setPriceMin(Math.random()*100);
+                    if (bookingId!=0)
+                        hotelModel.setPriceMin(bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(hotelEntity.getId(),bookingId).get(0).getPrice());
+                    else
+                        hotelModel.setPriceMin(0);
+
                     hotelModels.add(hotelModel);
+
 
                     for (AttractionEntity attractionEntity : hotelEntity.getAttractionEntitySet()) {
                         AttractionModel attractionModel = new AttractionModel();
@@ -111,7 +121,7 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                     hotelModel.setCountRateHotel(100);
                     hotelModel.setDescriptionRateHotel("setDescriptionRateHotel");
 
-                    hotelModel.setPriceMin(Math.random()*100);
+                    hotelModel.setPriceMin(bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(hotelEntity.getId(),bookingId).get(0).getPrice());
                     hotelModels.add(hotelModel);
                     }
                 }
@@ -125,58 +135,58 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
         }
     }
 
-    public List<?> findAllByType (String typeCity) {
+    public List<?> findAllByType (String typeCity,int bookingId) {
         if (typeCity.equals("city")){
             List<CityEntity> cityEntityList = cityRepository.findAll();
-            return findAllByList(typeCity,cityEntityList);
+            return findAllByList(typeCity,cityEntityList,bookingId);
         }
         else {
             List<ProvinceEntity> provinceEntityList = provinceRepository.findAll();
-            return findAllByList(typeCity,provinceEntityList);
+            return findAllByList(typeCity,provinceEntityList,bookingId);
         }
     }
-    public List<?> findAllByTypeAndName (String typeCity,String name) {
+    public List<?> findAllByTypeAndName (String typeCity,String name,int bookingId) {
         if (typeCity.equals("city")){
             List<CityEntity> cityEntityList = cityRepository.findByCity(name);
-            return findAllByList(typeCity,cityEntityList);
+            return findAllByList(typeCity,cityEntityList,bookingId);
         }
         else {
             List<ProvinceEntity> provinceEntityList = provinceRepository.findByProvince(name);
-            return findAllByList(typeCity,provinceEntityList);
+            return findAllByList(typeCity,provinceEntityList,bookingId);
         }
     }
-    public List<?> searchName (String typeCity,String name,String sort) {
+    public List<?> searchName (String typeCity,String name,String sort,int bookingId) {
         if (typeCity.equals("city")) {
-            List<CitySearchDTO> list =(List<CitySearchDTO>) findAllByTypeAndName(typeCity,name);
+            List<CitySearchDTO> list =(List<CitySearchDTO>) findAllByTypeAndName(typeCity,name,bookingId);
             return sortCity(list,sort);
         }
         else if (typeCity.equals("province")){
-            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) findAllByTypeAndName(typeCity,name);
+            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) findAllByTypeAndName(typeCity,name,bookingId);
             return sortProvince(list,sort);
         }
         else
             return new ArrayList<>();
     }
-    public List<?> search (String typeCity,String sort) {
+    public List<?> search (String typeCity,String sort,int bookingId) {
         if (typeCity.equals("city")) {
-            List<CitySearchDTO> list =(List<CitySearchDTO>) findAllByType(typeCity);
+            List<CitySearchDTO> list =(List<CitySearchDTO>) findAllByType(typeCity,bookingId);
             return sortCity(list,sort);
         }
         else if (typeCity.equals("province")){
-            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) findAllByType(typeCity);
+            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) findAllByType(typeCity,bookingId);
             return sortProvince(list,sort);
         }
         else
             return new ArrayList<>();
     }
 
-    public List<?> findAllAccommodationByType (String typeCity) {
-            List<?> list= findAllByType(typeCity);
+    public List<?> findAllAccommodationByType (String typeCity,int bookingId) {
+            List<?> list= findAllByType(typeCity,bookingId);
             return countAllByList(typeCity,list);
     }
 
-    public List<?> findAllAccommodationByTypeAndName (String typeCity,String name){
-        List<?> list= findAllByTypeAndName(typeCity,name);
+    public List<?> findAllAccommodationByTypeAndName (String typeCity,String name,int bookingId){
+        List<?> list= findAllByTypeAndName(typeCity,name,bookingId);
             return countAllByList(typeCity,list);
     }
 

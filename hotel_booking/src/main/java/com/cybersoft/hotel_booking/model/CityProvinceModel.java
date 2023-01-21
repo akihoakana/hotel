@@ -15,7 +15,7 @@ public class CityProvinceModel {
      *  hotel
      */
     private List<HotelModel> hotelModels;
-    /**
+     /**
      *  Search
      */
     private int dateOfStay;

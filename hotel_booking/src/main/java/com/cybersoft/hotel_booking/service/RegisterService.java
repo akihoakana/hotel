@@ -10,6 +10,5 @@ public interface RegisterService {
     UsersEntity registerNewUserAccount(SignInRequest logInRequest, String siteURL) throws UnsupportedEncodingException, MessagingException;
     boolean emailExists(String email);
     void sendVerificationEmail(String email, String siteURL) throws UnsupportedEncodingException, MessagingException;
-    public void signInPassword(String email,String password);
     UsersEntity confirmByEmail(String email);
 }

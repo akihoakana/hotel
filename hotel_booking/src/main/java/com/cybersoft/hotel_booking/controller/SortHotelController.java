@@ -31,10 +31,10 @@ public class SortHotelController {
     private CityProvinceServiceImp cityProvinceServiceImp;
     @PostMapping("/{sort}")
     public ResponseEntity<?> search(@PathVariable("typecity") String typeCity, @PathVariable("sort") String sort) {
-        return ResponseEntity.ok(cityProvinceServiceImp.search(typeCity,sort));
+        return ResponseEntity.ok(cityProvinceServiceImp.search(typeCity,sort,3));
     }
     @PostMapping("/{name}/{sort}")
     public ResponseEntity<?> searchName(@PathVariable("typecity") String typeCity,@PathVariable("name") String name, @PathVariable("sort") String sort) {
-        return ResponseEntity.ok(cityProvinceServiceImp.searchName(typeCity,name,sort));
+        return ResponseEntity.ok(cityProvinceServiceImp.searchName(typeCity,name,sort,3));
     }
 }

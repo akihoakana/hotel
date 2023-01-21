@@ -1,5 +1,6 @@
 package com.cybersoft.hotel_booking.controller;
 
+import com.cybersoft.hotel_booking.repository.BookingRoomRepository;
 import com.cybersoft.hotel_booking.repository.CityRepository;
 import com.cybersoft.hotel_booking.repository.ProvinceRepository;
 import com.cybersoft.hotel_booking.service.Imp.CityProvinceServiceImp;
@@ -22,19 +23,23 @@ public class CityController {
 
     @PostMapping("/search")
     public ResponseEntity<?> search(@PathVariable("typecity") String typeCity) {
-        return ResponseEntity.ok(cityProvinceServiceImp.findAllByType(typeCity));
+        return ResponseEntity.ok(cityProvinceServiceImp.findAllByType(typeCity,3));
     }
+//    @PostMapping("/abc")
+//    public ResponseEntity<?> abc(@PathVariable("typecity") String typeCity) {
+//        return ResponseEntity.ok(bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(1,1));
+//    }
     @PostMapping("/{name}/search")
     public ResponseEntity<?> searchName(@PathVariable("typecity") String typeCity, @PathVariable("name") String name) {
-        return ResponseEntity.ok(cityProvinceServiceImp.findAllByTypeAndName(typeCity,name));
+        return ResponseEntity.ok(cityProvinceServiceImp.findAllByTypeAndName(typeCity,name,3));
     }
     @PostMapping("/{name}")
     public ResponseEntity<?> findAllAccommodationByTypeAndName(@PathVariable("typecity") String typeCity, @PathVariable("name") String name) {
-        return ResponseEntity.ok(cityProvinceServiceImp.findAllAccommodationByTypeAndName(typeCity,name));
+        return ResponseEntity.ok(cityProvinceServiceImp.findAllAccommodationByTypeAndName(typeCity,name,0));
     }
     @PostMapping("")
     public ResponseEntity<?> findAllAccommodationByType(@PathVariable("typecity") String typeCity) {
-        return ResponseEntity.ok(cityProvinceServiceImp.findAllAccommodationByType(typeCity)) ;
+        return ResponseEntity.ok(cityProvinceServiceImp.findAllAccommodationByType(typeCity,0)) ;
     }
     @PostMapping("/findall")
     public ResponseEntity<?> findall(@PathVariable("typecity") String typeCity) {
