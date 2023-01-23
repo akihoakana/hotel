@@ -1,6 +1,9 @@
 package com.cybersoft.hotel_booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity(name = "room_dates")
@@ -10,15 +13,8 @@ public class RoomDatesEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    @Column(name = "dt")
-//    @Temporal(TemporalType.DATE)
-//    private Date dt;
-
     @Column(name = "room_status")
     private int roomStatus;
-
-//    @Column(name = "roomId")
-//    private int roomId;
 
 //    @JsonIgnore
     @ManyToOne
@@ -30,9 +26,9 @@ public class RoomDatesEntity {
     @JoinColumn(name = "dt")
     private CalendarEntity calendarEntity;
 
-//    @JsonIgnore
-    @OneToMany(mappedBy = "roomDatesEntity")
-    Set<BookingRoomDatesEntity> bookingRoomDatesEntitySet;
+////    @JsonIgnore
+//    @OneToMany(mappedBy = "roomDatesEntity")
+//    Set<BookingRoomDatesEntity> bookingRoomDatesEntitySet;
 
     public int getId() {
         return id;
@@ -66,11 +62,11 @@ public class RoomDatesEntity {
         this.calendarEntity = calendarEntity;
     }
 
-    public Set<BookingRoomDatesEntity> getBookingRoomDatesEntitySet() {
-        return bookingRoomDatesEntitySet;
-    }
-
-    public void setBookingRoomDatesEntitySet(Set<BookingRoomDatesEntity> bookingRoomDatesEntitySet) {
-        this.bookingRoomDatesEntitySet = bookingRoomDatesEntitySet;
-    }
+//    public Set<BookingRoomDatesEntity> getBookingRoomDatesEntitySet() {
+//        return bookingRoomDatesEntitySet;
+//    }
+//
+//    public void setBookingRoomDatesEntitySet(Set<BookingRoomDatesEntity> bookingRoomDatesEntitySet) {
+//        this.bookingRoomDatesEntitySet = bookingRoomDatesEntitySet;
+//    }
 }

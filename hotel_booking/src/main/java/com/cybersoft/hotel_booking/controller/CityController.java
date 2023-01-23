@@ -1,5 +1,6 @@
 package com.cybersoft.hotel_booking.controller;
 
+import com.cybersoft.hotel_booking.payload.request.SearchRequest;
 import com.cybersoft.hotel_booking.repository.BookingRoomRepository;
 import com.cybersoft.hotel_booking.repository.CityRepository;
 import com.cybersoft.hotel_booking.repository.ProvinceRepository;
@@ -20,15 +21,16 @@ public class CityController {
     private ProvinceRepository provinceRepository;
     @Autowired
     private CityProvinceServiceImp cityProvinceServiceImp;
-
+    @Autowired
+    private BookingRoomRepository bookingRoomRepository;
     @PostMapping("/search")
     public ResponseEntity<?> search(@PathVariable("typecity") String typeCity) {
         return ResponseEntity.ok(cityProvinceServiceImp.findAllByType(typeCity,3));
     }
-//    @PostMapping("/abc")
-//    public ResponseEntity<?> abc(@PathVariable("typecity") String typeCity) {
-//        return ResponseEntity.ok(bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(1,1));
-//    }
+    @PostMapping("/abc")
+    public ResponseEntity<?> abc(@PathVariable("typecity") String typeCity , @RequestBody SearchRequest searchRequest) {
+        return ResponseEntity.ok(bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(searchRequest.getCheckIn(),searchRequest.getCheckOut(),searchRequest.getHotelId(),searchRequest.getMaxOccupyAdult(),searchRequest.getMaxOccupyChild()));
+    }
     @PostMapping("/{name}/search")
     public ResponseEntity<?> searchName(@PathVariable("typecity") String typeCity, @PathVariable("name") String name) {
         return ResponseEntity.ok(cityProvinceServiceImp.findAllByTypeAndName(typeCity,name,3));

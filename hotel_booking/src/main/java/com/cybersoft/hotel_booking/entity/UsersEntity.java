@@ -1,5 +1,7 @@
 package com.cybersoft.hotel_booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -40,17 +42,17 @@ public class UsersEntity {
     @JoinColumn(name = "role_id")
     private RolesEntity roles;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "users")
     Set<ReviewEntity> reviewEntitySet;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "users")
     Set<BookingEntity> bookingEntitySet;
 
 //    @JsonIgnore
-    @OneToMany(mappedBy = "users")
-    Set<BillEntity> billEntitySet;
+//    @OneToMany(mappedBy = "users")
+//    Set<BillEntity> billEntitySet;
 
     public int getId() {
         return id;
@@ -140,11 +142,11 @@ public class UsersEntity {
         this.bookingEntitySet = bookingEntitySet;
     }
 
-    public Set<BillEntity> getBillEntitySet() {
-        return billEntitySet;
-    }
-
-    public void setBillEntitySet(Set<BillEntity> billEntitySet) {
-        this.billEntitySet = billEntitySet;
-    }
+//    public Set<BillEntity> getBillEntitySet() {
+//        return billEntitySet;
+//    }
+//
+//    public void setBillEntitySet(Set<BillEntity> billEntitySet) {
+//        this.billEntitySet = billEntitySet;
+//    }
 }

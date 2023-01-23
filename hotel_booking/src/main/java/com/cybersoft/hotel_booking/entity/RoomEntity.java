@@ -24,16 +24,7 @@ public class RoomEntity {
     @Column(name = "price")
     private float price;
 
-//    @Column(name = "hotelId")
-//    private int hotelId;
-//
-//    @Column(name = "bedCategoryId")
-//    private int bedCategoryId;
-//
-//    @Column(name = "roomCategoryId")
-//    private int roomCategoryId;
-
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private HotelEntity hotel;
@@ -48,11 +39,11 @@ public class RoomEntity {
     @JoinColumn(name = "room_category_id")
     private RoomCategoryEntity roomCategoryEntity;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "room")
     Set<RoomDatesEntity> roomDatesEntitySet;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "room")
     Set<BookingRoomEntity> bookingRoomEntitySet;
 

@@ -37,11 +37,11 @@ public class FilterHotelController {
             Integer abc1 = Integer.valueOf(abc.substring(1));
             System.out.println("abc1 = " + abc1);
             Predicate<HotelModel> hotelModelPredicate ;
-            if (abc.contains("<")){
+            if (abc.contains(">")){
                 hotelModelPredicate = hotelModel -> hotelModel.getPriceMin() > abc1;
             }
             else {
-                hotelModelPredicate = hotelModel -> hotelModel.getPriceMin()< abc1;
+                hotelModelPredicate = hotelModel -> hotelModel.getPriceMin()<= abc1;
             }
             List<CitySearchDTO> list =(List<CitySearchDTO>) cityProvinceServiceImp.findAllByType(typeCity,3);
             for (CitySearchDTO citySearchDTO : list){

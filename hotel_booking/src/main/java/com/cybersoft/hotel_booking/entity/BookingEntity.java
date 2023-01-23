@@ -13,12 +13,6 @@ public class BookingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    @Column(name = "userId")
-//    private int userId;
-
-//    @Column(name = "voucherId")
-//    private int voucherId;
-
     @Column(name = "adult_number")
     private int adultNumber;
 
@@ -42,9 +36,9 @@ public class BookingEntity {
     @Temporal(TemporalType.DATE)
     private Date checkOut;
 
-    @Column(name = "issued_date")
-    @Temporal(TemporalType.DATE)
-    private Date issuedDate;
+//    @Column(name = "issued_date")
+//    @Temporal(TemporalType.DATE)
+//    private Date issuedDate;
 
     @Column(name = "paid_date")
     @Temporal(TemporalType.DATE)
@@ -54,17 +48,13 @@ public class BookingEntity {
     @Temporal(TemporalType.DATE)
     private Date cancelDate;
 
-    @Column(name = "payment_date")
-    @Temporal(TemporalType.DATE)
-    private Date paymentDate;
-
 //    @JsonIgnore
     @OneToMany(mappedBy = "booking")
     Set<BookingRoomEntity> bookingRoomEntitySet;
 
 //    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private UsersEntity users;
 
 //    @JsonIgnore
@@ -72,13 +62,13 @@ public class BookingEntity {
     @JoinColumn(name = "voucher_id")
     private VoucherEntity voucher;
 
-//    @JsonIgnore
-    @OneToMany(mappedBy = "booking")
-    Set<BookingRoomDatesEntity> bookingRoomDatesEntitySet;
+////    @JsonIgnore
+//    @OneToMany(mappedBy = "booking")
+//    Set<BookingRoomDatesEntity> bookingRoomDatesEntitySet;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "booking")
-    BillEntity billEntity;
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "booking")
+//    BillEntity billEntity;
 
     public int getId() {
         return id;
@@ -144,13 +134,13 @@ public class BookingEntity {
         this.checkOut = checkOut;
     }
 
-    public Date getIssuedDate() {
-        return issuedDate;
-    }
-
-    public void setIssuedDate(Date issuedDate) {
-        this.issuedDate = issuedDate;
-    }
+//    public Date getIssuedDate() {
+//        return issuedDate;
+//    }
+//
+//    public void setIssuedDate(Date issuedDate) {
+//        this.issuedDate = issuedDate;
+//    }
 
     public Date getPaidDate() {
         return paidDate;
@@ -168,13 +158,13 @@ public class BookingEntity {
         this.cancelDate = cancelDate;
     }
 
-    public Date getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
-    }
+//    public Date getPaymentDate() {
+//        return paymentDate;
+//    }
+//
+//    public void setPaymentDate(Date paymentDate) {
+//        this.paymentDate = paymentDate;
+//    }
 
     public Set<BookingRoomEntity> getBookingRoomEntitySet() {
         return bookingRoomEntitySet;
@@ -200,19 +190,19 @@ public class BookingEntity {
         this.voucher = voucher;
     }
 
-    public Set<BookingRoomDatesEntity> getBookingRoomDatesEntitySet() {
-        return bookingRoomDatesEntitySet;
-    }
+//    public Set<BookingRoomDatesEntity> getBookingRoomDatesEntitySet() {
+//        return bookingRoomDatesEntitySet;
+//    }
+//
+//    public void setBookingRoomDatesEntitySet(Set<BookingRoomDatesEntity> bookingRoomDatesEntitySet) {
+//        this.bookingRoomDatesEntitySet = bookingRoomDatesEntitySet;
+//    }
 
-    public void setBookingRoomDatesEntitySet(Set<BookingRoomDatesEntity> bookingRoomDatesEntitySet) {
-        this.bookingRoomDatesEntitySet = bookingRoomDatesEntitySet;
-    }
-
-    public BillEntity getBillEntity() {
-        return billEntity;
-    }
-
-    public void setBillEntitySet(BillEntity billEntity) {
-        this.billEntity = billEntity;
-    }
+//    public BillEntity getBillEntity() {
+//        return billEntity;
+//    }
+//
+//    public void setBillEntitySet(BillEntity billEntity) {
+//        this.billEntity = billEntity;
+//    }
 }

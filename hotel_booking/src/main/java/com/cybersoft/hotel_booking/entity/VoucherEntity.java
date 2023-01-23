@@ -1,5 +1,7 @@
 package com.cybersoft.hotel_booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -21,7 +23,7 @@ public class VoucherEntity {
     @Temporal(TemporalType.DATE)
     private Date expiredDate;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "voucher")
     Set<BookingEntity> bookingEntitySet;
 

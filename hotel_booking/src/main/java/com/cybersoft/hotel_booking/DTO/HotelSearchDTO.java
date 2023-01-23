@@ -8,19 +8,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class HotelSearchDTO {
-    private int hotel_id;
     private String hotel_name;
-    private String address;
-    private String description;
-    private String image;
-    private int hotel_rank;
-    private double avg_rate_score;
-    private int rate_count;
-    private int booking_id;
     private int room_id;
     private int max_occupy_adult;
     private int max_occupy_child;
-    private double price;
+    private String check_in;
+    private String check_out;
     private String room_category;
     private String bed_category;
+    private double sub_total_price;
 }

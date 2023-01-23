@@ -63,10 +63,10 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                     hotelModel.setCountRateHotel(100);
                     hotelModel.setDescriptionRateHotel("setDescriptionRateHotel");
 
-                    if (bookingId!=0)
-                        hotelModel.setPriceMin(bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(hotelEntity.getId(),bookingId).get(0).getPrice());
-                    else
-                        hotelModel.setPriceMin(0);
+//                    if (bookingId!=0)
+//                        hotelModel.setPriceMin(bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(hotelEntity.getId(),bookingId).get(0).getPrice());
+//                    else
+//                        hotelModel.setPriceMin(0);
 
                     hotelModels.add(hotelModel);
 
@@ -121,7 +121,7 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
                     hotelModel.setCountRateHotel(100);
                     hotelModel.setDescriptionRateHotel("setDescriptionRateHotel");
 
-                    hotelModel.setPriceMin(bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(hotelEntity.getId(),bookingId).get(0).getPrice());
+//                    hotelModel.setPriceMin(bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(hotelEntity.getId(),bookingId).get(0).getPrice());
                     hotelModels.add(hotelModel);
                     }
                 }

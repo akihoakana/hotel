@@ -22,12 +22,6 @@ public class ReviewEntity {
     @Temporal(TemporalType.DATE)
     private Date createdDate;
 
-//    @Column(name = "hotelId")
-//    private int hotelId  ;
-//
-//    @Column(name = "usersId")
-//    private int usersId ;
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "hotel_id")
@@ -35,7 +29,7 @@ public class ReviewEntity {
 
 //    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private UsersEntity users;
 
     public int getId() {

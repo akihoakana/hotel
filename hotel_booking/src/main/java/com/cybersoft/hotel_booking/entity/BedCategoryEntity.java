@@ -1,5 +1,7 @@
 package com.cybersoft.hotel_booking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,7 +15,7 @@ public class BedCategoryEntity {
     @Column(name = "bed_category")
     private String bedCategory;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "bedCategoryEntity")
     Set<RoomEntity> room;
 
