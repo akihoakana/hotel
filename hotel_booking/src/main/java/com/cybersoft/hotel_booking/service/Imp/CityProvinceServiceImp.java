@@ -202,6 +202,59 @@ public class CityProvinceServiceImp implements CityService, ProvinceService {
         else
             return new ArrayList<>();
     }
+    public List<?> sortFilter (String typeCity
+            ,String sort
+            ,String price
+            ,String rate
+            ,String rank
+            , SearchRequest searchRequest) throws ParseException {
+        if (typeCity.equals("city")){
+            List<CitySearchDTO> list =(List<CitySearchDTO>) filter(typeCity
+                    ,price
+                    ,rate
+                    ,rank
+                    ,searchRequest);
+            return sortCity(list,sort);
+        }
+        else if (typeCity.equals("province")) {
+            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) filter(typeCity
+                    ,price
+                    ,rate
+                    ,rank
+                    ,searchRequest);
+            return sortProvince(list,sort);
+        }
+        else
+            return new ArrayList<>();
+    }
+    public List<?> sortFilterName (String typeCity
+            ,String name
+            ,String sort
+            ,String price
+            ,String rate
+            ,String rank
+            , SearchRequest searchRequest) throws ParseException {
+        if (typeCity.equals("city")){
+            List<CitySearchDTO> list =(List<CitySearchDTO>) filterName(typeCity
+                    ,name
+                    ,price
+                    ,rate
+                    ,rank
+                    ,searchRequest);
+            return sortCity(list,sort);
+        }
+        else if (typeCity.equals("province")) {
+            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) filterName(typeCity
+                    ,name
+                    ,price
+                    ,rate
+                    ,rank
+                    ,searchRequest);
+            return sortProvince(list,sort);
+        }
+        else
+            return new ArrayList<>();
+    }
 
     public List<?> findAllAccommodationByType (String typeCity, SearchRequest searchRequest) throws ParseException {
             List<?> list= findAllByType(typeCity,searchRequest);

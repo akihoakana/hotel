@@ -55,52 +55,31 @@ public class FilterHotelController {
                 ,rank
                 ,searchRequest));
     }
-    @PostMapping("/{sort}")
+    @PostMapping("/sort/{sort}")
     public ResponseEntity<?> sort(@PathVariable("typecity") String typeCity
             ,@RequestParam(name = "price") String price
             ,@RequestParam(name = "rate") String rate
             ,@RequestParam(name = "rank") String rank
             ,@RequestBody SearchRequest searchRequest, @PathVariable("sort") String sort) throws ParseException {
-        if (typeCity.equals("city")){
-            List<CitySearchDTO> list =(List<CitySearchDTO>) cityProvinceServiceImp.filter(typeCity
-                    ,price
-                    ,rate
-                    ,rank
-                    ,searchRequest);
-            return ResponseEntity.ok(cityProvinceServiceImp.sortCity(list,sort));
-        }
-        else if (typeCity.equals("province")) {
-            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) cityProvinceServiceImp.filter(typeCity
-                    ,price
-                    ,rate
-                    ,rank
-                    ,searchRequest);
-            return ResponseEntity.ok(cityProvinceServiceImp.sortProvince(list,sort));
-        }
-        else return ResponseEntity.ok("OK");
+            return ResponseEntity.ok(cityProvinceServiceImp.sortFilter(typeCity
+                    , sort
+                    , price
+                    , rate
+                    , rank
+                    ,searchRequest));
     }
-    @PostMapping("/{name}/{sort}")
+    @PostMapping("/{name}/sort/{sort}")
     public ResponseEntity<?> sortName(@PathVariable("typecity") String typeCity
             ,@RequestParam(name = "price") String price
             ,@RequestParam(name = "rate") String rate
             ,@RequestParam(name = "rank") String rank
             ,@RequestBody SearchRequest searchRequest,@PathVariable("name") String name, @PathVariable("sort") String sort) throws ParseException {
-        if (typeCity.equals("city")){
-            List<CitySearchDTO> list =(List<CitySearchDTO>) cityProvinceServiceImp.filterName(typeCity,name
-                    ,price
-                    ,rate
-                    ,rank
-                    ,searchRequest);
-            return ResponseEntity.ok(cityProvinceServiceImp.sortCity(list,sort));
-        }
-        else if (typeCity.equals("province")) {
-            List<ProvinceSearchDTO> list =(List<ProvinceSearchDTO>) cityProvinceServiceImp.filterName(typeCity
-                    ,name
-                    ,price
-                    ,rate
-                    ,rank
-                    ,searchRequest);
-            return ResponseEntity.ok(cityProvinceServiceImp.sortProvince(list,sort));
-        }
-        else return ResponseEntity.ok("OK");    }
+        return ResponseEntity.ok(cityProvinceServiceImp.sortFilterName(typeCity
+                , name
+                , sort
+                , price
+                , rate
+                , rank
+                ,searchRequest));
+    }
 }
