@@ -13,8 +13,8 @@ public class SearchServiceImp implements SearchService {
 
     @Autowired
     private BookingRoomRepository bookingRoomRepository;
-    private List<?> findAll(String typeCity, List<?> provinceEntityList,String checkIn,String checkOut,int hotelId,int maxOccupyAdult,int maxOccupyChild) {
-        List<HotelSearchDTO>hotelSearchDTOList= bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(checkIn,checkOut,hotelId,maxOccupyAdult,maxOccupyChild);
-        return null;
-    }
+//    private List<?> findAll(String typeCity, List<?> provinceEntityList,String checkIn,String checkOut,int hotelId,int maxOccupyAdult,int maxOccupyChild) {
+//        List<HotelSearchDTO>hotelSearchDTOList= bookingRoomRepository.findBookingRoomByHotelIdAndAndBookingId(checkIn,checkOut,hotelId,maxOccupyAdult,maxOccupyChild);
+//        return null;
+//    }
 }
